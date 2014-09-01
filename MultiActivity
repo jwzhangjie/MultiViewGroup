@@ -1,0 +1,51 @@
+package com.jwzhangjie.scrollview;
+
+import com.jwzhangjie.scrollview.MultiViewGroup.OnViewChangeListener;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.Toast;
+
+public class MultiActivity extends FragmentActivity implements
+		OnViewChangeListener {
+
+	private MultiViewGroup multiViewGroup;
+	private int allScreen;
+	private int curreScreen = 0;
+
+	@Override
+	protected void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
+		setContentView(R.layout.activity_main);
+		multiViewGroup = (MultiViewGroup) findViewById(R.id.screenParent);
+		multiViewGroup.SetOnViewChangeListener(this);
+		allScreen = multiViewGroup.getChildCount() - 1;
+	}
+
+	public void nextScreen(View view) {
+		if (curreScreen < allScreen) {
+			curreScreen++;
+		} else {
+			curreScreen = 0;
+
+		}
+		multiViewGroup.snapToScreen(curreScreen);
+	}
+
+	public void preScreen(View view) {
+		if (curreScreen > 0) {
+			curreScreen--;
+		} else {
+			curreScreen = allScreen;
+		}
+		multiViewGroup.snapToScreen(curreScreen);
+	}
+
+	@Override
+	public void OnViewChange(int page) {
+		Toast.makeText(getApplicationContext(),
+				getString(R.string.currePage, page), Toast.LENGTH_SHORT).show();
+	}
+
+}
